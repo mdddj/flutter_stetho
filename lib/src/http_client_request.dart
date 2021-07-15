@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter_stetho/src/http_client_response.dart';
-import 'package:flutter_stetho/src/inspector_response.dart';
-import 'package:flutter_stetho/src/method_channel_controller.dart';
-import 'package:flutter_stetho/src/utils.dart';
+import 'package:flutter_stetho_null_safety/src/utils.dart';
+
+import 'http_client_response.dart';
+import 'inspector_response.dart';
+import 'method_channel_controller.dart';
+
 
 class StethoHttpClientRequest implements HttpClientRequest {
   final HttpClientRequest request;

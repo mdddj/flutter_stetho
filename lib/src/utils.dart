@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter_stetho/src/method_channel_controller.dart';
+import 'method_channel_controller.dart';
+
 
 /// Create a response transformer that can intercept and pipe the http response
 /// data to the Method channel

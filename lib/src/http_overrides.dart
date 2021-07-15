@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter_stetho/src/http_client.dart';
+import 'http_client.dart';
+
 
 class StethoHttpOverrides extends HttpOverrides {
   final String Function(Uri url, Map<String, String> environment)?

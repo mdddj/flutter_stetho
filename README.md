@@ -1,88 +1,29 @@
-# flutter_stetho
-
-A plugin that connects Flutter to the Chrome Dev Tools on Android devices via the [Stetho Android Library](http://facebook.github.io/stetho/).
-
-## Bug on Inspector of Google Chrome
-
-info: In the last update of Google Chrome, there is a bug in the inspect, so use other browsers based on the older versions of chrome, like [Brave](https://brave.com/download/).
-
-## Install
-Add `flutter_stetho` as dependency to your `pubspec.yaml`
-
-```yaml
+引入插件
+```dart
+  flutter_stetho: ^0.5.2
+```
+原作者不再更新,不支持flutter1.22版本以上,如有需要请使用下面这个仓库代替
+ ```dart
 dev_dependencies:
   flutter_stetho:  
     git:
       url: git://github.com/irdevp/flutter_stetho.git
       ref: master
-``` 
 
-Add on `main.dart`
-
-```dart
-import 'package:flutter_stetho/flutter_stetho.dart';
-
-void main() {
-  Stetho.initialize();
-
-  runApp(MyApp());
-}
 ```
 
-## Tutorial Network Inspector on Brave
+打开谷歌浏览器地址栏输入`chrome://inspect/#devices`
+![image.png](https://upload-images.jianshu.io/upload_images/3671684-a871742416d504fe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+点击下面的inspect,会弹出如下窗口
+![image.png](https://upload-images.jianshu.io/upload_images/3671684-3102a28a7abef61f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+当app触发http请求时就可以看到所有网络连接了,如下
+![image.png](https://upload-images.jianshu.io/upload_images/3671684-5acd285e2466a6bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-navigate to `chrome://inspect`
+## 如果后面遇到调试工具ui错乱的问题
+下载对应的版本就可以了
+*   Linux x64: [https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/827102/](https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Linux_x64/827102/)
+*   Mac OS: [https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Mac/827102/](https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Mac/827102/)
+*   Windows: [https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win/827102/](https://commondatastorage.googleapis.com/chromium-browser-snapshots/index.html?prefix=Win/827102/)
 
-<img src="https://github.com/irdevp/flutter_stetho/raw/master/assets/example.gif" alt="Network Inspector Brave">
-
-## Network Inspector
-
-The main feature I was aiming to achieve was a Network Inspector. 
-
-<img src="https://github.com/irdevp/flutter_stetho/raw/master/assets/network_inspector.gif" alt="Network Inspector in Action">
-
-## Getting Started
-
-How can you too get this plugin up and running in your own app? Follow these steps.
-
-### Install the plugin  
-
-Add `flutter_stetho` to your dependencies in the `pubspec.yaml` file
-
-  - For Flutter 1.7.x, use version `0.3.x`
-  - For Flutter 1.8.x, use version `0.4.x`
-  - For Flutter 1.9.x, use version `0.5.x`
-  - For Flutter 2.x, use version `0.6.x`
-
-### Install StethoHttpOverrides
-
-Next, you'll need to install the `Stetho.initialize()` in the main() function of your app. This will enable Stetho and allow `flutter_stetho` to wrap all http calls and report information to the Chrome Dev Tools via the Stetho package from Facebook.
-
-Note: It's probably a good idea only put this override in [a `main_dev.dart` file](https://flutter.rocks/2018/03/02/separating-build-environments-part-one/). 
-
-```dart
-void main() {
-  Stetho.initialize();
-
-  runApp(new MyApp());
-}
-```
-
-### Run your app on an Android Device
-
-`flutter run`
-
-### Open Chrome
-
-Pop open Chrome or Chromium, navigate to `chrome://inspect`
-
-You should now see your App appear in the window.
-
-## Known Issues
-
-  * Timing may be slightly off for some requests. That's because:
-  * Code is rough mvp / prototype code. Needs improvement.
-  * Animated Gifs not working
-  * Some error cases may not be properly handled. Need more testing / feedback to find problems.
-  * No Tests
-  * If the app shuts down on start up run `flutter clean` to remove old builds.
+相关的资料
+https://github.com/facebook/stetho/issues/696#issuecomment-790760811

@@ -1,16 +1,19 @@
-name: flutter_stetho
-description: A network inspector for Flutter on Android using the Chrome Dev Tools
-version: 0.6.0
-author: Brian Egan <brian@brianegan.com>
-homepage: https://github.com/brianegan/flutter_stetho
+name: flutter_stetho_null_safety
+description: Android上使用Chrome开发工具的Flutter网络检查器
+version: 1.0.0
+homepage: https://github.com/mdddj/flutter_stetho
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
+  flutter: ">=1.10.0"
 
 dependencies:
   flutter:
     sdk: flutter
 flutter:
   plugin:
-    androidPackage: com.brianegan.flutterstetho
-    pluginClass: FlutterStethoPlugin
+    platforms:
+      android:
+        package: com.brianegan.flutterstetho
+        pluginClass: FlutterStethoPlugin
+

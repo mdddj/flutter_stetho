@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:flutter_stetho/src/inspector_request.dart';
-import 'package:flutter_stetho/src/inspector_response.dart';
+
+import 'inspector_request.dart';
+import 'inspector_response.dart';
 
 class MethodChannelController {
   static const MethodChannel _channel = MethodChannel('flutter_stetho');
