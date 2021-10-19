@@ -17,40 +17,56 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
-
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-public class FlutterStethoPlugin implements MethodCallHandler {
+public class FlutterStethoPlugin implements MethodCallHandler,FlutterPlugin {
     public final static String TAG = "FlutterStethoPlugin";
     private final NetworkEventReporter mEventReporter = NetworkEventReporterImpl.get();
     private final Map<String, PipedInputStream> inputs = new HashMap<>();
     private final Map<String, PipedOutputStream> outputs = new HashMap<>();
     private final Map<String, FlutterStethoInspectorResponse> responses = new HashMap<>();
     private final Map<String, LinkedBlockingQueue<QueueItem>> queues = new HashMap<>();
-    private final Stetho.Initializer initializer;
+    private Stetho.Initializer initializer;
+    private MethodChannel methodChannel;
 
-    public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_stetho");
-        channel.setMethodCallHandler(new FlutterStethoPlugin(registrar.context()));
+    public static void registerWith(@SuppressWarnings("deprecation") Registrar registrar) {
+        final FlutterStethoPlugin instance = new FlutterStethoPlugin();
+        instance.initStethoPlugin(registrar.context(),registrar.messenger());
     }
 
-    private FlutterStethoPlugin(final Context context) {
-        initializer = new Stetho.Initializer(context) {
+    @Override
+    public void onAttachedToEngine(FlutterPluginBinding binding) {
+        initStethoPlugin(binding.getApplicationContext(),binding.getBinaryMessenger());
+    }
+
+    private void initStethoPlugin(final Context applicationContext, BinaryMessenger messenger) {
+        initializer = new Stetho.Initializer(applicationContext) {
             @Override
             protected Iterable<DumperPlugin> getDumperPlugins() {
-                return new Stetho.DefaultDumperPluginsBuilder(context).finish();
+                return new Stetho.DefaultDumperPluginsBuilder(applicationContext).finish();
             }
 
             @Override
             protected Iterable<ChromeDevtoolsDomain> getInspectorModules() {
-                return new Stetho.DefaultInspectorModulesBuilder(context).finish();
+                return new Stetho.DefaultInspectorModulesBuilder(applicationContext).finish();
             }
         };
+        methodChannel = new MethodChannel(messenger, "flutter_stetho");
+        methodChannel.setMethodCallHandler(this);
     }
+
+    @Override
+    public void onDetachedFromEngine(FlutterPluginBinding binding) {
+        methodChannel.setMethodCallHandler(null);
+        methodChannel = null;
+    }
+
 
     @Override
     public void onMethodCall(final MethodCall call, Result result) {
