@@ -20,10 +20,9 @@ class Stetho {
   /// }
   /// ```
   static Future<void> initialize() async {
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid || Platform.isIOS) {
       WidgetsFlutterBinding.ensureInitialized();
       HttpOverrides.global = StethoHttpOverrides();
-
       return MethodChannelController.initialize();
     }
   }
